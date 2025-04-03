@@ -1,0 +1,73 @@
+/* src/components/MainLayout.module.css */
+
+.mainLayout {
+  display: flex;
+  flex-direction: column; /* Apila header, navbar, content */
+  min-height: 100vh;
+  background-color: #f8f9fa; /* Un fondo muy ligero para toda la app */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px; /* Más padding horizontal */
+  background-color: #ffffff; /* Fondo blanco */
+  border-bottom: 1px solid #dee2e6; /* Línea divisora */
+  height: 60px; /* Misma altura que navbar para alinear */
+  box-sizing: border-box;
+  position: sticky; /* Para que el header quede fijo arriba */
+  top: 0;
+  z-index: 10; /* Asegura que esté sobre otros elementos al hacer scroll */
+}
+
+.headerTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #343a40; /* Color oscuro */
+}
+
+.logoutButton {
+  padding: 8px 15px;
+  background-color: #6c757d; /* Gris */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: #5a6268; /* Gris más oscuro */
+}
+
+/* El Navbar se importa y tiene sus propios estilos */
+
+.contentArea {
+  flex-grow: 1; /* Hace que esta área ocupe el espacio restante */
+  padding: 25px; /* Espacio alrededor del contenido principal */
+  background-color: #ffffff; /* Fondo blanco para el área de contenido */
+  margin: 20px; /* Margen exterior para separar del fondo general */
+  border-radius: 8px; /* Esquinas redondeadas */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Sombra sutil */
+}
+
+/* --- Media Query para Responsividad --- */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 15px;
+    height: 50px; /* Reducir altura en móvil */
+  }
+  .headerTitle {
+    font-size: 1.1rem;
+  }
+  .logoutButton {
+      padding: 6px 10px;
+      font-size: 0.9rem;
+  }
+  .contentArea {
+     padding: 15px;
+     margin: 10px;
+  }
+}

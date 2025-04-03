@@ -1,0 +1,89 @@
+/* src/components/Navbar.module.css */
+
+.navbar {
+  background-color: #343a40; /* Color oscuro para la barra */
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: sticky; /* Para que la navbar también quede fija */
+  top: 60px; /* Justo debajo del header (ajusta si cambiaste la altura del header) */
+  z-index: 9; /* Debajo del header si ambos son sticky */
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* Alinea los elementos horizontalmente */
+  align-items: center;
+  height: 60px; /* Altura fija para la barra */
+}
+
+.navItem {
+  margin-right: 10px; /* Espacio entre elementos del menú */
+}
+
+.navLink {
+  display: flex; /* Para alinear icono y texto */
+  align-items: center;
+  padding: 10px 15px; /* Espaciado interno del enlace */
+  color: #adb5bd; /* Color grisáceo para texto normal */
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  height: 40px; /* Altura fija para centrar verticalmente con la barra */
+  box-sizing: border-box;
+}
+
+.navLink:hover {
+  background-color: #495057; /* Fondo gris más oscuro al pasar el mouse */
+  color: #f8f9fa; /* Texto más claro al pasar el mouse */
+}
+
+/* Estilo para el enlace activo (NavLink añade esta clase si la función className lo retorna) */
+.navLink.active {
+  background-color: #007bff; /* Fondo azul para el activo */
+  color: #ffffff; /* Texto blanco para el activo */
+  font-weight: 500;
+}
+
+.navIcon {
+  margin-right: 8px; /* Espacio entre icono y texto */
+  font-size: 1.1rem; /* Tamaño del icono */
+}
+
+/* --- Media Query para Responsividad --- */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 10px;
+    top: 50px; /* Ajustar si cambiaste la altura del header en móvil */
+  }
+  .navList {
+     justify-content: space-around; /* Distribuir iconos en pantallas pequeñas */
+  }
+  /* Oculta el texto y muestra solo iconos en pantallas pequeñas */
+  .navLink span {
+    display: none;
+  }
+  .navIcon {
+    margin-right: 0; /* Sin margen si solo está el icono */
+    font-size: 1.4rem; /* Iconos un poco más grandes */
+  }
+  .navLink {
+    padding: 10px 12px; /* Ajustar padding para iconos solos */
+  }
+  .navItem {
+    margin-right: 5px; /* Menos espacio entre iconos */
+  }
+}
+
+@media (max-width: 480px) {
+    .navIcon {
+        font-size: 1.2rem; /* Iconos más pequeños en pantallas muy pequeñas */
+    }
+     .navLink {
+        padding: 10px 10px;
+    }
+     .navItem {
+        margin-right: 3px;
+     }
+}

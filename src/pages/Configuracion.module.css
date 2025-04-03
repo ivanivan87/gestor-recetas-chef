@@ -1,0 +1,108 @@
+/* src/pages/Configuracion.module.css */
+
+.configContainer {
+    padding: 20px;
+  }
+  
+  .configContainer h1 {
+    margin-bottom: 10px;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+    display: inline-block; /* Para que el borde no ocupe todo el ancho */
+  }
+  
+  .description {
+    margin-bottom: 30px;
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  .configForm {
+    max-width: 600px; /* Limitar ancho del formulario */
+  }
+  
+  .inputGroup {
+    margin-bottom: 25px;
+  }
+  
+  .label {
+    display: flex; /* Alinear icono y texto */
+    align-items: center;
+    margin-bottom: 10px;
+    color: #444;
+    font-weight: 600; /* Labels más importantes */
+    font-size: 1.1rem;
+  }
+  
+  .icon {
+    margin-right: 10px;
+    color: #007bff; /* Icono azul */
+    font-size: 1.2rem;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  }
+  
+  .helperText {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #6c757d; /* Gris */
+  }
+  
+  .saveButton {
+    display: inline-flex; /* Para alinear icono y texto en el botón */
+    align-items: center;
+    justify-content: center;
+    padding: 12px 25px;
+    background-color: #28a745; /* Verde para guardar */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .saveButton:hover:not(:disabled) {
+    background-color: #218838; /* Verde más oscuro */
+  }
+  
+  .saveButton:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+  }
+  
+  .statusMessage {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+  }
+  
+  .success {
+      background-color: #d4edda; /* Verde claro */
+      color: #155724; /* Verde oscuro */
+      border: 1px solid #c3e6cb;
+  }
+  
+  .error {
+      background-color: #f8d7da; /* Rojo claro */
+      color: #721c24; /* Rojo oscuro */
+      border: 1px solid #f5c6cb;
+  }
