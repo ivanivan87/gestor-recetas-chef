@@ -1,0 +1,104 @@
+/* src/components/Insumos/InsumosList.module.css */
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto; /* Permite scroll horizontal en pantallas pequeñas */
+  margin-top: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.insumosTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* Ancho mínimo antes de scroll */
+}
+
+.insumosTable thead {
+  background-color: #f8f9fa;
+}
+
+.insumosTable th,
+.insumosTable td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: middle;
+  white-space: nowrap; /* Evitar que el contenido de las celdas se parta */
+}
+
+.insumosTable th {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.insumosTable tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.priceCell {
+    text-align: right;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 1.1rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editButton {
+  color: #007bff;
+}
+.editButton:hover {
+  color: #0056b3;
+  transform: scale(1.1);
+}
+
+.deleteButton {
+  color: #dc3545;
+}
+.deleteButton:hover {
+  color: #a71d2a;
+  transform: scale(1.1);
+}
+
+.emptyMessage {
+  margin-top: 20px;
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* --- Media Queries para Responsividad de la Tabla --- */
+@media (max-width: 768px) {
+    /* Reducimos padding y fuente en celdas/headers para móviles */
+    .insumosTable th,
+    .insumosTable td {
+         padding: 8px 10px; /* Menos padding */
+         font-size: 0.9rem; /* Fuente ligeramente más pequeña */
+         white-space: nowrap; /* Mantenemos nowrap para scroll */
+    }
+    .actionButtons {
+        gap: 5px; /* Menos espacio entre botones de acción */
+    }
+    .actionButton {
+        font-size: 1rem; /* Iconos de acción un poco más pequeños */
+    }
+}

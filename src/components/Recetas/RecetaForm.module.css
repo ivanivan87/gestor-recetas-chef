@@ -1,0 +1,272 @@
+/* src/components/Recetas/RecetaForm.module.css */
+
+.recetaForm {
+    padding: 10px; /* Padding ligero, el modal ya tiene */
+  }
+  
+  .formSection {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  .recetaForm > div:last-of-type { /* Quitar borde inferior a la última sección */
+      border-bottom: none;
+      margin-bottom: 15px;
+  }
+  
+  .sectionTitle {
+    font-size: 1.2rem;
+    color: #4e73df; /* Azul de acento */
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 5px;
+  }
+  
+  .formRow, .addIngredienteRow {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap; /* Permitir envolver */
+  }
+  
+  .formGroup {
+      flex: 1;
+      min-width: 150px; /* Ancho mínimo para campos */
+      margin-bottom: 15px; /* Espacio inferior por si envuelve */
+  }
+  
+  .formGroup label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .icon {
+      margin-right: 8px;
+      color: #6c757d;
+  }
+  
+  .input,
+  .select {
+    width: 100%;
+    padding: 10px 12px; /* Padding estándar */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .select {
+    cursor: pointer;
+  }
+  
+  .input:focus,
+  .select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  /* --- Sección Añadir Ingrediente Específico --- */
+  .addIngredienteRow {
+      align-items: flex-end; /* Alinear items (especialmente botón) abajo */
+      gap: 15px;
+  }
+  
+  .addButton {
+      padding: 10px 15px;
+      background-color: #17a2b8; /* Color Cyan/Info */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap; /* Evitar que el botón se parta */
+      height: calc(2 * 10px + 1rem + 2 * 1px); /* Intentar alinear altura con inputs */
+      line-height: 1.5; /* Ajustar según font-size */
+      box-sizing: border-box;
+  }
+  
+  .addButton:hover {
+      background-color: #138496;
+  }
+  
+  /* --- Lista de Ingredientes Añadidos --- */
+  .ingredientesList {
+      list-style: none;
+      padding: 0;
+      margin-top: 15px;
+      max-height: 200px; /* Altura máxima con scroll si hay muchos */
+      overflow-y: auto;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      padding: 10px;
+      background-color: #fcfdff;
+  }
+  
+  .ingredientesList li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 5px;
+      border-bottom: 1px dashed #eee;
+      font-size: 0.95rem;
+  }
+  
+  .ingredientesList li:last-child {
+      border-bottom: none;
+  }
+  
+  .removeButton {
+      background: none;
+      border: none;
+      color: #dc3545; /* Rojo */
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 5px;
+      margin-left: 10px;
+  }
+  .removeButton:hover {
+      color: #a71d2a;
+  }
+  
+  /* --- Sección Desglose de Costos --- */
+  .costGrid {
+      display: grid;
+      grid-template-columns: auto 1fr; /* Columna para label/icon, columna para valor */
+      gap: 8px 15px; /* Espacio vertical y horizontal */
+      align-items: center;
+      font-size: 0.95rem;
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #eee;
+  }
+  
+  .costGrid div {
+      color: #333;
+  }
+  
+  .costGrid div:nth-child(odd) { /* Labels en la columna izquierda */
+      font-weight: 500;
+      color: #555;
+      display: flex;
+      align-items: center;
+  }
+  .costGrid div:nth-child(even) { /* Valores en la columna derecha */
+      text-align: right;
+      font-weight: 500;
+      font-family: 'Courier New', Courier, monospace;
+  }
+  
+  /* Estilos especiales para el precio final */
+  .finalPriceLabel, .finalPriceValue {
+      font-weight: bold !important;
+      font-size: 1.1rem !important;
+      color: #28a745 !important; /* Verde */
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+  }
+  .finalPriceLabel {
+      grid-column: 1 / 2; /* Ocupa primera columna */
+  }
+  .finalPriceValue {
+       grid-column: 2 / 3; /* Ocupa segunda columna */
+  }
+  
+  .costGrid small {
+      grid-column: 1 / -1; /* Ocupa todas las columnas */
+      font-size: 0.8rem;
+      color: #6c757d;
+      text-align: center;
+      margin-top: 10px;
+  }
+  
+  /* --- Botones Principales --- */
+  .mainButtonGroup {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+  }
+  
+  .saveButton,
+  .cancelButton {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .saveButton {
+      background-color: #28a745;
+      color: white;
+  }
+  .saveButton:hover:not(:disabled) {
+      background-color: #218838;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .cancelButton {
+      background-color: #6c757d;
+      color: white;
+  }
+  .cancelButton:hover {
+      background-color: #5a6268;
+  }
+  
+  /* --- Responsividad del Formulario --- */
+  @media (max-width: 768px) {
+      .formRow, .addIngredienteRow {
+          flex-direction: column;
+          gap: 0;
+      }
+      .formGroup {
+          margin-bottom: 18px;
+          min-width: 100%;
+      }
+       .formRow > .formGroup:last-child,
+       .addIngredienteRow > .formGroup:last-child {
+          margin-bottom: 0;
+      }
+      .addIngredienteRow {
+          align-items: stretch; /* Que todos los elementos ocupen el ancho */
+      }
+       .addButton {
+          width: 100%; /* Botón añadir ocupa todo el ancho */
+          justify-content: center;
+          margin-top: 5px;
+      }
+       .mainButtonGroup {
+          justify-content: center;
+      }
+       .saveButton, .cancelButton {
+          flex-grow: 1;
+          text-align: center;
+      }
+      .costGrid {
+          grid-template-columns: auto auto; /* Ajustar columnas si es necesario */
+          gap: 5px 10px;
+          padding: 10px;
+      }
+       .costGrid div {
+          font-size: 0.9rem;
+       }
+       .finalPriceLabel, .finalPriceValue {
+          font-size: 1rem !important;
+       }
+  }

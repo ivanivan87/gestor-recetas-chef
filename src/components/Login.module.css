@@ -1,147 +1,162 @@
 /* src/components/Login.module.css */
 
 .loginContainer {
-    display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center;    /* Centra verticalmente */
-    min-height: 100vh;      /* Ocupa toda la altura de la pantalla */
-    background-color: #eef1f5; /* Un fondo gris claro suave */
-    padding: 20px;          /* Espacio por si el contenido es muy grande */
-    box-sizing: border-box;
-  }
-  
-  .loginBox {
-    background-color: #ffffff; /* Fondo blanco para la caja */
-    padding: 40px 50px;       /* Más espacio interno (vertical, horizontal) */
-    border-radius: 10px;      /* Esquinas redondeadas */
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
-    width: 100%;              /* Ancho completo hasta el max-width */
-    max-width: 420px;         /* Ancho máximo del formulario */
-    text-align: center;       /* Centrar texto como el título */
-    box-sizing: border-box;
-  }
-  
-  .title {
-    color: #333;
-    margin-bottom: 10px; /* Espacio debajo del título principal */
-    font-size: 1.8rem;  /* Tamaño de fuente más grande */
-    font-weight: 600;
-  }
-  
-  .subtitle {
-    color: #666;
-    margin-bottom: 30px; /* Espacio antes del formulario */
-    font-size: 1rem;
-  }
-  
-  .form {
-    width: 100%;
-    text-align: left; /* Alinear elementos del form a la izquierda */
-  }
-  
-  .inputGroup {
-    margin-bottom: 25px; /* Más espacio entre campos */
-  }
-  
-  .label {
-    display: block;     /* Asegura que esté en su propia línea */
-    margin-bottom: 8px; /* Espacio entre label e input */
-    color: #444;
-    font-weight: 500;   /* Un poco más de peso */
-    font-size: 0.95rem;
-  }
-  
-  /* Contenedor para el input y el icono */
-  .inputWrapper {
-    position: relative; /* Clave para posicionar el icono dentro */
-    width: 100%;
-  }
-  
-  /* Estilos para el icono */
-  .inputIcon {
-    position: absolute;         /* Posicionamiento absoluto respecto al wrapper */
-    top: 50%;                   /* Centrado vertical (aproximado) */
-    left: 15px;                 /* Espacio desde la izquierda */
-    transform: translateY(-50%); /* Ajuste fino para centrar verticalmente */
-    color: #9ca3af;             /* Color gris para el icono */
-    font-size: 1rem;            /* Tamaño del icono (ajusta si es necesario) */
-    pointer-events: none;       /* Evita que el icono interfiera con el clic en el input */
-  }
-  
-  /* Ajustar el padding izquierdo del input */
-  .input {
-    width: 100%;
-    padding: 14px 16px 14px 45px; /* Padding: Arriba | Derecha | Abajo | Izquierda <-- Aumentamos Izquierda */
-    border: 1px solid #d1d5db; /* Borde gris claro */
-    border-radius: 6px;       /* Esquinas ligeramente redondeadas */
-    box-sizing: border-box;
-    font-size: 1rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Transiciones suaves */
-  }
-  
-  .input:focus {
-    border-color: #3b82f6; /* Azul en foco */
-    outline: none;       /* Quitar outline por defecto */
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Sombra suave azul al enfocar */
-  }
-  
-  /* Opcional: Estilo para cambiar color del icono cuando el input tiene foco */
-  /* .input:focus + .inputIcon {
-     color: #3b82f6;
-  } */
-  
-  .button {
-    width: 100%;
-    padding: 14px 15px;
-    background: linear-gradient(90deg, #3b82f6, #2563eb); /* Gradiente azul */
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease; /* Transición para sombra y transform */
-    margin-top: 10px;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); /* Sombra azul */
-  }
-  
-  .button:hover {
-    background: linear-gradient(90deg, #2563eb, #1d4ed8); /* Gradiente más oscuro al pasar el mouse */
-    box-shadow: 0 6px 20px rgba(29, 78, 216, 0.4); /* Sombra más pronunciada */
-    transform: translateY(-2px); /* Efecto ligero de elevación */
-  }
-  
-  .button:active {
-      transform: translateY(0px); /* Botón vuelve a su sitio al hacer clic */
-      box-shadow: 0 3px 10px rgba(29, 78, 216, 0.3);
-  }
-  
-  .error {
-    color: #b91c1c; /* Rojo oscuro para errores */
-    background-color: #fee2e2; /* Fondo rojo muy claro */
-    border: 1px solid #fecaca; /* Borde rojo claro */
-    border-radius: 6px;
-    padding: 12px 15px;
-    margin-top: 20px;
-    margin-bottom: 15px;
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-  
-  /* Opcional: Estilos para el enlace de registro si lo añades */
-  .registerLink {
-    margin-top: 25px;
-    font-size: 0.9rem;
-    color: #555;
-  }
-  
-  .registerLink a {
-    color: #3b82f6;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  
-  .registerLink a:hover {
-    text-decoration: underline;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fc;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.loginBox {
+  background-color: #ffffff;
+  padding: 40px 50px;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15); /* Sombra ajustada */
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-sizing: border-box;
+  /* border-top: 4px solid #4e73df; <- Borde eliminado */
+}
+
+.title {
+  color: #333;
+  margin-bottom: 15px; /* Reducir margen para acercar el logo */
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* --- ESTILOS NUEVOS PARA EL LOGO --- */
+.logoContainer {
+  display: flex; /* Para alinear spans si es necesario */
+  justify-content: center; /* Centrar logo */
+  align-items: baseline; /* Alinear base de los textos */
+  margin-bottom: 35px; /* Espacio antes del formulario */
+}
+
+.logo {
+  font-size: 1.6rem; /* Ajustar tamaño si es necesario */
+  font-weight: 700;
+  color: #333; /* Mismo color que sidebar */
+}
+
+.logoHighlight {
+  font-size: 1.6rem; /* Mismo tamaño */
+  font-weight: 500; /* Un poco menos pesado que 'Chef' */
+  color: #4e73df; /* Mismo azul que sidebar */
+  margin-left: 2px; /* Pequeño espacio */
+}
+/* --- FIN ESTILOS NUEVOS --- */
+
+/* Se eliminó la clase .subtitle anterior */
+
+.form {
+  width: 100%;
+  text-align: left;
+}
+
+.inputGroup {
+  margin-bottom: 25px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  color: #5a5c69;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.inputIcon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #b7b9cc;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 16px 14px 45px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  color: #5a5c69;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus {
+  border-color: #4e73df;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.2);
+}
+
+.input:focus + .inputIcon {
+   color: #4e73df;
+}
+
+.button {
+  width: 100%;
+  padding: 14px 15px;
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(78, 115, 223, 0.25);
+}
+
+.button:hover {
+  background-color: #2e59d9;
+  box-shadow: 0 6px 20px rgba(46, 89, 217, 0.3);
+  transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(0px);
+    box-shadow: 0 3px 10px rgba(46, 89, 217, 0.2);
+}
+
+.error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 12px 15px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.registerLink {
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: #5a5c69;
+}
+
+.registerLink a {
+  color: #4e73df;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.registerLink a:hover {
+  text-decoration: underline;
+}

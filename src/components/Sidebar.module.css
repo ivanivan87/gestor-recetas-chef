@@ -1,0 +1,139 @@
+/* src/components/Sidebar.module.css */
+
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  border-right: 1px solid #3a5064;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  /* Transición para la propiedad transform (o left si prefieres) */
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebarHeader {
+  padding: 20px 25px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 1px solid #3a5064;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ecf0f1;
+}
+.logoHighlight {
+  color: #5dade2;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.sidebarNav {
+  flex-grow: 1;
+  padding: 0 15px;
+  overflow-y: auto; /* Añadir scroll si hay muchos items */
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  color: #bdc3c7;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+  white-space: nowrap; /* Evitar que el texto se parta */
+}
+
+.navLink:hover {
+  background-color: #3b5064;
+  color: #ffffff;
+}
+
+.navLink.active {
+  background-color: #4e73df;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.navLink.active .navIcon {
+   color: #ffffff;
+}
+
+.navIcon {
+  margin-right: 12px;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  transition: color 0.2s ease;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0; /* Evita que el icono se encoja */
+}
+
+.navLink:hover .navIcon {
+   color: #ffffff;
+}
+
+.sidebarFooter {
+    padding: 20px 15px;
+    border-top: 1px solid #3a5064;
+    margin-top: auto; /* Empuja el footer hacia abajo */
+}
+
+.logoutButton {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 15px;
+    background-color: transparent;
+    border: none;
+    color: #bdc3c7;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+     white-space: nowrap;
+}
+
+.logoutButton .navIcon {
+     color: #e74c3c;
+}
+
+.logoutButton:hover {
+   background-color: #c0392b;
+   color: #ffffff;
+}
+.logoutButton:hover .navIcon {
+   color: #ffffff;
+}
+
+
+/* --- Responsividad del Sidebar --- */
+@media (max-width: 768px) {
+  .sidebar {
+    /* Por defecto, está fuera de la pantalla a la izquierda */
+    transform: translateX(-100%);
+    /* Aseguramos z-index alto para que se muestre sobre el contenido */
+    z-index: 1001;
+    /* Sombra más pronunciada cuando está visible en móvil */
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Clase que se añade cuando isOpen es true */
+  .sidebarOpen {
+    transform: translateX(0); /* Lo trae a la vista */
+  }
+
+  /* Los estilos internos (colores, etc.) se mantienen */
+}

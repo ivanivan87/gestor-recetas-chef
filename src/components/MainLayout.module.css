@@ -2,72 +2,151 @@
 
 .mainLayout {
   display: flex;
-  flex-direction: column; /* Apila header, navbar, content */
+  background-color: #f8f9fc;
   min-height: 100vh;
-  background-color: #f8f9fa; /* Un fondo muy ligero para toda la app */
+  position: relative;
+  overflow-x: hidden;
 }
 
-.header {
+/* --- NUEVO: Estilo para aplicar blur --- */
+/* Selecciona los hijos directos (sidebar y contentWrapper) cuando el layout tiene la clase blurEffect */
+.mainLayout.blurEffect > :is(.contentWrapper, aside) { /* :is() para agrupar selectores */
+  filter: blur(4px);
+  /* Opcional: Evitar interacción con el fondo borroso */
+  /* pointer-events: none; */
+  /* user-select: none; */
+}
+/* --- FIN NUEVO ESTILO --- */
+
+
+.contentWrapper {
+  flex-grow: 1;
+  margin-left: 250px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  /* Añadir filter a la transición para suavizar entrada/salida del blur */
+  transition: margin-left 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+/* Asegurarse que la transición del sidebar también incluya filter */
+/* (Esto iría en Sidebar.module.css, pero lo ponemos aquí para referencia,
+   lo ideal es añadir 'filter' a la transición existente en Sidebar.module.css) */
+/*
+.sidebar {
+   transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+*/
+
+
+/* --- Header --- */
+.header {
+  background-color: #ffffff;
+  padding: 0 30px;
+  border-bottom: 1px solid #e3e6f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  height: 60px;
+  display: flex;
   align-items: center;
-  padding: 10px 25px; /* Más padding horizontal */
-  background-color: #ffffff; /* Fondo blanco */
-  border-bottom: 1px solid #dee2e6; /* Línea divisora */
-  height: 60px; /* Misma altura que navbar para alinear */
-  box-sizing: border-box;
-  position: sticky; /* Para que el header quede fijo arriba */
+  justify-content: space-between;
+  position: sticky;
   top: 0;
-  z-index: 10; /* Asegura que esté sobre otros elementos al hacer scroll */
+  z-index: 10; /* Header sobre el contenido */
+}
+
+.mobileMenuButton {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #5a5c69;
+  cursor: pointer;
+  padding: 5px;
 }
 
 .headerTitle {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
+  color: #5a5c69;
   font-weight: 600;
-  color: #343a40; /* Color oscuro */
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.logoutButton {
-  padding: 8px 15px;
-  background-color: #6c757d; /* Gris */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+.headerSpacer {
+    width: 40px;
+    flex-shrink: 0;
 }
-
-.logoutButton:hover {
-  background-color: #5a6268; /* Gris más oscuro */
-}
-
-/* El Navbar se importa y tiene sus propios estilos */
 
 .contentArea {
-  flex-grow: 1; /* Hace que esta área ocupe el espacio restante */
-  padding: 25px; /* Espacio alrededor del contenido principal */
-  background-color: #ffffff; /* Fondo blanco para el área de contenido */
-  margin: 20px; /* Margen exterior para separar del fondo general */
-  border-radius: 8px; /* Esquinas redondeadas */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Sombra sutil */
+  flex-grow: 1;
+  padding: 30px;
 }
 
-/* --- Media Query para Responsividad --- */
+.mobileBackdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* Debajo del sidebar móvil */
+  cursor: pointer;
+}
+
+
+/* --- Responsividad --- */
 @media (max-width: 768px) {
+  .contentWrapper {
+    margin-left: 0;
+    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out; /* Añadir filter */
+  }
+
   .header {
-    padding: 10px 15px;
-    height: 50px; /* Reducir altura en móvil */
+    padding: 0 15px;
+    height: 55px;
+    justify-content: flex-start;
+    gap: 15px;
   }
+
+  .mobileMenuButton {
+    display: block;
+  }
+
   .headerTitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
-  .logoutButton {
-      padding: 6px 10px;
-      font-size: 0.9rem;
+
+  .headerSpacer {
+      display: none;
   }
+
   .contentArea {
-     padding: 15px;
-     margin: 10px;
+    padding: 20px;
   }
+
+  .sidebarActuallyOpen .mobileBackdrop {
+       display: block;
+  }
+
+   /* Opcional: Empujar ligeramente el contenido */
+   /* .sidebarActuallyOpen .contentWrapper {
+      transform: translateX(50px);
+      filter: blur(2px); // O aplicar blur aquí también/alternativamente
+   } */
+}
+
+@media (max-width: 480px) {
+   .headerTitle {
+     font-size: 1.1rem;
+   }
+   .contentArea {
+     padding: 15px;
+   }
+   .header {
+       gap: 10px;
+   }
 }

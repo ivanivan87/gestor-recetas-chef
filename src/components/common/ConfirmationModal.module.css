@@ -1,0 +1,44 @@
+/* src/components/common/ConfirmationModal.module.css */
+
+.message {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 10px; /* Ajusta si es necesario */
+    text-align: center;
+}
+
+.buttonContainer {
+    width: 100%; /* Ocupa todo el espacio del footer del modal */
+    display: flex;
+    justify-content: center; /* Centra los botones */
+    gap: 15px; /* Espacio entre botones */
+}
+
+.button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.confirmButton {
+    background-color: #dc3545; /* Rojo para confirmar eliminación */
+    color: white;
+}
+
+.confirmButton:hover {
+    background-color: #c82333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.cancelButton {
+    background-color: #6c757d; /* Gris */
+    color: white;
+}
+
+.cancelButton:hover {
+    background-color: #5a6268;
+}
