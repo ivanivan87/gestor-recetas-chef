@@ -1,47 +1,47 @@
 /* src/pages/GestionInsumos.module.css */
 
 .gestionContainer {
-    padding: 15px;
-  }
-  
-  .gestionContainer h1 {
-    margin-top: 0; /* Quitar margen superior por si acaso */
-    margin-bottom: 15px; /* Espacio debajo del título */
-    color: #333;
-    border-bottom: 2px solid #6c757d;
-    padding-bottom: 8px;
-    /* display: inline-block; <-- Eliminamos esto para que sea bloque */
-    /* Como es bloque, el borde irá hasta el final del contenedor */
-  }
-  
-  .gestionContainer h2 {
-      margin-top: 30px;
-      margin-bottom: 15px;
-      color: #444;
-  }
-  
-  .toggleFormButton {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      /* Añadimos margen inferior para separarlo del <hr> */
-      margin-bottom: 25px;
-      transition: background-color 0.2s ease;
-      display: inline-flex; /* Para alinear el icono y texto */
-      align-items: center;
-  }
-  
-  .toggleFormButton:hover {
-      background-color: #0056b3;
-  }
-  
-  .divider {
-      margin-top: 30px; /* Ajustar margen superior si es necesario */
-      margin-bottom: 30px;
-      border: 0;
-      border-top: 1px solid #eee;
-  }
+  padding: 15px;
+}
+
+.gestionContainer h1 {
+  margin-top: 0; /* Quitar margen superior por si acaso */
+  margin-bottom: 15px; /* Espacio debajo del título */
+  color: #333;
+  border-bottom: 2px solid #6c757d;
+  padding-bottom: 8px;
+  /* display: inline-block; <-- Eliminamos esto para que sea bloque */
+  /* Como es bloque, el borde irá hasta el final del contenedor */
+}
+
+.gestionContainer h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.toggleFormButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    /* Añadimos margen inferior para separarlo del <hr> */
+    margin-bottom: 25px;
+    transition: background-color 0.2s ease;
+    display: inline-flex; /* Para alinear el icono y texto */
+    align-items: center;
+}
+
+.toggleFormButton:hover {
+    background-color: #0056b3;
+}
+
+.divider {
+    margin-top: 30px; /* Ajustar margen superior si es necesario */
+    margin-bottom: 30px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
