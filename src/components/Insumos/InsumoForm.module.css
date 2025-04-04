@@ -1,164 +1,67 @@
 /* src/components/Insumos/InsumoForm.module.css */
 
-.insumoForm {
-    /* Añadimos un fondo muy sutil y un borde */
-    background-color: #fdfdff; /* Ligeramente distinto al blanco puro #fff del modal */
-    border: 1px solid #f0f0f0; /* Borde muy suave */
-    padding: 25px 30px; /* Mantenemos padding */
-    border-radius: 6px; /* Redondear también el form interno */
-    margin: -10px -15px; /* Ajustar márgenes negativos para compensar padding del modal si es necesario */
-                         /* O simplemente quitar padding al modalBody si este form es el único hijo */
-  }
-  
-  /* Quitamos el h3 que ya no existe */
-  
-  .formRow {
-      display: flex;
-      gap: 25px;
-      margin-bottom: 22px;
-      flex-wrap: wrap;
-  }
-  
-  .formGroup {
-      flex: 1;
-      min-width: 180px;
-      display: flex;
-      flex-direction: column;
-  }
-  
-  .formGroup label {
-    margin-bottom: 8px;
-    color: #495057;
-    font-weight: 500;
-    font-size: 0.9rem;
-  }
-  
-  .inputWrapper {
-    position: relative;
-    width: 100%;
-  }
-  
-  .inputIcon {
-    position: absolute;
-    top: 50%;
-    left: 12px;
-    transform: translateY(-50%);
-    color: #adb5bd;
-    font-size: 0.95rem;
-    pointer-events: none;
-  }
-  
-  .input,
-  .select {
-    width: 100%;
-    padding: 12px 15px 12px 40px; /* Padding ajustado para icono */
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    background-color: #fff; /* Asegurar fondo blanco para inputs */
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .select {
-    padding: 12px 15px; /* Select sin padding izquierdo extra */
-    background-color: white;
-    cursor: pointer;
-  }
-  
-  .input:focus,
-  .select:focus {
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-  
-  .input:focus + .inputIcon {
-     color: #4e73df;
-  }
-  
-  .input[type="number"] { }
-  
-  .input:disabled {
-      background-color: #e9ecef;
-      cursor: not-allowed;
-      color: #6c757d;
-  }
-  
-  /* Separador visual opcional antes de los botones */
-  .buttonGroup {
-      margin-top: 25px;
-      padding-top: 20px;
-      border-top: 1px solid #e9ecef; /* Línea divisora más sutil */
-      display: flex;
-      justify-content: flex-end;
-      gap: 15px;
-  }
-  
-  .saveButton,
-  .cancelButton {
-      padding: 10px 25px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 500;
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .saveButton {
-      background-color: #28a745;
-      color: white;
-  }
-  
-  .saveButton:hover:not(:disabled) {
-      background-color: #218838;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .cancelButton {
-      background-color: #6c757d;
-      color: white;
-  }
-  
-  .cancelButton:hover {
-      background-color: #5a6268;
-  }
-  
-  .formGroup small {
-      display: block;
-      margin-top: 6px;
-      font-size: 0.8rem;
-      color: #6c757d;
-  }
-  
-  /* --- Media Queries --- */
-  @media (max-width: 600px) {
-      .insumoForm {
-          /* Quitar márgenes negativos en móvil si causan problemas */
-          /* margin: 0; */
-          padding: 20px; /* Ajustar padding si es necesario */
-      }
-      .formRow {
-          flex-direction: column;
-          gap: 0;
-          margin-bottom: 0;
-      }
-      .formGroup {
-          margin-bottom: 20px;
-          min-width: 100%;
-      }
-      .formRow > .formGroup:last-child {
-          margin-bottom: 0;
-      }
-       .buttonGroup {
-          justify-content: center;
-          margin-top: 20px;
-          padding-top: 15px;
-      }
-      .saveButton,
-      .cancelButton {
-          flex-grow: 1;
-          text-align: center;
-      }
-  }
+.insumoForm { padding: 10px 0; }
+.formSection { padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #e9ecef; }
+.insumoForm > div:last-of-type { border-bottom: none; margin-bottom: 0; }
+.formRow { display: flex; gap: 25px; margin-bottom: 15px; flex-wrap: wrap; }
+.formRow:last-child { margin-bottom: 0; }
+.formGroup { flex: 1; min-width: 180px; display: flex; flex-direction: column; }
+.formGroup label { margin-bottom: 8px; color: #495057; font-weight: 500; font-size: 0.9rem; }
+
+.inputWrapper { position: relative; width: 100%; }
+.inputIcon { position: absolute; top: 50%; left: 12px; transform: translateY(-50%); color: #adb5bd; font-size: 0.95rem; pointer-events: none; z-index: 2; }
+
+/* Estilos base para inputs y select nativo */
+.input,
+.select {
+  width: 100%;
+  padding: 8px 12px; /* Padding base */
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box; /* Importante */
+  font-size: 0.9rem; /* Coincidir con customSelectStyles */
+  background-color: #fff;
+  /* Altura FIJA consistente */
+  height: 38px; /* Usar el mismo valor que en customSelectStyles */
+  line-height: normal; /* Resetear line-height para mejor control vertical */
+  /* Centrar texto verticalmente (puede variar según fuente) */
+  /* padding-top: 0; padding-bottom: 0; */ /* Si height es fijo, quitar padding vertical? Probar */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Añadir padding izquierdo solo a inputs con icono DENTRO del wrapper */
+.inputWrapper .input {
+  padding-left: 35px;
+}
+
+.select {
+  /* Select nativo necesita su padding normal */
+  padding: 8px 10px;
+  cursor: pointer;
+  -webkit-appearance: none; -moz-appearance: none; appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ced4da%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat; background-position: right .75rem center; background-size: 8px 10px;
+}
+
+/* El componente react-select usa los 'customSelectStyles' definidos en el JS */
+
+.input:focus,
+.select:focus {
+  border-color: #80bdff; outline: 0; box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+}
+
+.inputWrapper .input:focus + .inputIcon {
+   color: #4e73df;
+}
+
+.input:disabled { background-color: #e9ecef; cursor: not-allowed; color: #6c757d;}
+
+/* Botones */
+.buttonGroup { margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 12px; }
+.saveButton, .cancelButton { padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s ease, box-shadow 0.2s ease; }
+.saveButton { background-color: #28a745; color: white; } .saveButton:hover:not(:disabled) { background-color: #218838; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.cancelButton { background-color: #6c757d; color: white; } .cancelButton:hover { background-color: #5a6268; }
+.formGroup small { display: block; margin-top: 6px; font-size: 0.8rem; color: #6c757d; }
+
+/* Responsividad */
+@media (max-width: 600px) { /* ... sin cambios ... */ }

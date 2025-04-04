@@ -3,8 +3,7 @@ import { Outlet, useOutletContext } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Modal from './common/Modal';
 import ConfirmationModal from './common/ConfirmationModal';
-// Importamos AMBOS formularios
-import InsumoForm from './Insumos/InsumoForm';
+import InsumoForm from './Insumos/InsumoForm'; // Importa InsumoForm
 import RecetaForm from './Recetas/RecetaForm'; // Importa RecetaForm
 import styles from './MainLayout.module.css';
 import { FaBars } from 'react-icons/fa';
@@ -23,26 +22,8 @@ function MainLayout() {
     setModalState({ type: null, data: null });
   };
 
-  // --- Callbacks específicos para pasar a los formularios ---
-  // Estos callbacks son llamados por los formularios cuando tienen éxito
-  // y a su vez llaman a la función de lógica REAL que se pasó en 'data' desde la página hija
-
-  // Callback para cuando InsumoForm guarda con éxito
-  const handleInsumoSaveSuccess = (insumoData, insumoIdOriginal) => {
-    if (modalState.data?.onSave) {
-      modalState.data.onSave(insumoData, insumoIdOriginal); // Llama a handleDoSaveInsumo
-    }
-    closeModal(); // Cierra el modal
-  };
-
-  // Callback para cuando RecetaForm guarda con éxito
-  const handleRecetaSaveSuccess = (recetaData, recetaIdOriginal) => {
-     if (modalState.data?.onSave) {
-       modalState.data.onSave(recetaData, recetaIdOriginal); // Llama a handleDoSaveReceta
-     }
-     closeModal(); // Cierra el modal
-  };
-
+  // La lógica de guardar/confirmar ahora vive completamente en las páginas hijas (GestionInsumos, GestionRecetas)
+  // y ellas se encargan de llamar a closeModal() al finalizar.
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -56,25 +37,18 @@ function MainLayout() {
 
       <div className={styles.contentWrapper}>
          <header className={styles.header}>
-          <button className={styles.mobileMenuButton} onClick={toggleSidebar}>
-            <FaBars />
-          </button>
-          <div className={styles.headerTitle}>
-             Gestor Chef v1.0
-          </div>
+          <button className={styles.mobileMenuButton} onClick={toggleSidebar}> <FaBars /> </button>
+          <div className={styles.headerTitle}> Gestor Chef v1.0 </div>
           <div className={styles.headerSpacer}></div>
         </header>
-
         <main className={styles.contentArea}>
-          {/* Pasamos las funciones de control de modales a las páginas hijas */}
+          {/* Pasamos las funciones de control de modales */}
           <Outlet context={{ openModal, closeModal }} />
         </main>
       </div>
 
-       {/* Backdrop del menú lateral móvil */}
-       {isSidebarOpen && (
-          <div className={styles.mobileBackdrop} onClick={toggleSidebar}></div>
-       )}
+       {/* Backdrop menú lateral móvil */}
+       {isSidebarOpen && (<div className={styles.mobileBackdrop} onClick={toggleSidebar}></div>)}
 
       {/* --- RENDERIZADO CENTRALIZADO DE MODALES --- */}
 
@@ -84,54 +58,49 @@ function MainLayout() {
         onClose={closeModal}
         title={modalState.type === 'editInsumo' ? 'Editar Insumo' : 'Añadir Nuevo Insumo'}
       >
+        {/* Renderizamos InsumoForm. Le pasamos directamente la función onSave
+            que viene en modalState.data (que es handleDoSaveInsumo) y closeModal para onCancel */}
         <InsumoForm
-           // Pasamos el insumo a editar si existe en data.insumoData
            insumoToEdit={modalState.type === 'editInsumo' ? modalState.data?.insumoData : null}
-           // onSave llama al callback que a su vez llama a la función original de GestionInsumos
-           onSave={handleInsumoSaveSuccess}
-           onCancel={closeModal}
+           onSave={modalState.data?.onSave} // Pasa la función handleDoSaveInsumo directamente
+           onCancel={closeModal} // Cancelar simplemente cierra el modal
          />
       </Modal>
 
-       {/* --- NUEVO: Modal para Añadir/Editar Receta --- */}
+       {/* Modal para Añadir/Editar Receta */}
       <Modal
         isOpen={modalState.type === 'addReceta' || modalState.type === 'editReceta'}
         onClose={closeModal}
         title={modalState.type === 'editReceta' ? 'Editar Receta' : 'Crear Nueva Receta'}
       >
         <RecetaForm
-           // Pasamos la receta a editar si existe en data.recetaData
            recetaToEdit={modalState.type === 'editReceta' ? modalState.data?.recetaData : null}
-           // onSave llama al callback que a su vez llama a la función original de GestionRecetas
-           onSave={handleRecetaSaveSuccess}
+           onSave={modalState.data?.onSave} // Pasa la función handleDoSaveReceta
            onCancel={closeModal}
          />
       </Modal>
 
 
-      {/* Modal para Confirmar Eliminación (Genérico ahora basado en data) */}
+      {/* Modal para Confirmar Eliminación */}
       <ConfirmationModal
-        isOpen={modalState.type?.startsWith('confirmDelete')} // Detecta cualquier confirmación de borrado
+        isOpen={modalState.type?.startsWith('confirmDelete')}
         onClose={closeModal}
         onConfirm={() => {
              if (modalState.data?.confirmAction) {
-                 modalState.data.confirmAction(); // Ejecuta la acción de borrado (pasada desde la página)
+                 modalState.data.confirmAction(); // Ejecuta handleDoDeleteInsumo/Receta
              }
-             closeModal();
+             // La lógica de cierre ahora está DENTRO de handleDoDelete... o la llamamos aquí si falla
+             // closeModal(); // Quitado de aquí, se llama desde el handler de la página
             }}
-        // Usamos ?? para dar un título por defecto si no viene en data
         title={modalState.data?.title ?? "Confirmar Acción"}
-        // Usamos ?? para dar un mensaje por defecto
-        message={modalState.data?.message ?? `¿Estás seguro de realizar esta acción?`}
+        message={modalState.data?.message ?? `¿Estás seguro? Esta acción no se puede deshacer.`}
       />
 
     </div>
   );
 }
 
-// Hook para que los hijos usen el contexto
-export function useModalControl() {
-  return useOutletContext();
-}
+// Hook de contexto (sin cambios)
+export function useModalControl() { return useOutletContext(); }
 
 export default MainLayout;
