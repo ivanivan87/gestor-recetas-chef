@@ -1,177 +1,124 @@
-import React, { useState, useEffect } from 'react'; // Añadir useEffect
+import React, { useState, useEffect, useMemo } from 'react';
 import { useModalControl } from '../components/MainLayout';
 import InsumosList from '../components/Insumos/InsumosList';
 import styles from './GestionInsumos.module.css';
-import { FaPlusCircle } from 'react-icons/fa';
+import { FaPlusCircle, FaSearch } from 'react-icons/fa';
 
-// --- Importar funciones de Firestore ---
+// --- Importar Firestore ---
 import { db } from '../firebaseConfig';
-import { collection, addDoc, getDocs } from "firebase/firestore"; // Añadir getDocs para lectura futura
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore"; // Todas las funciones necesarias
 
-// --- Referencia a la colección 'insumos' ---
+// --- Importar toast ---
+import toast from 'react-hot-toast'; // <-- IMPORTANTE AÑADIR
+
+// Referencia a la colección 'insumos'
 const insumosCollectionRef = collection(db, "insumos");
 
-// --- VALOR TEMPORAL PARA IVA ---
-const IVA_TEMPORAL = 21;
-// --- FIN VALOR TEMPORAL ---
+const IVA_TEMPORAL = 21; // Temporal
 
 function GestionInsumos() {
   const { openModal, closeModal } = useModalControl();
 
-  // El estado 'insumos' empieza vacío. Se llenará desde Firestore.
   const [insumos, setInsumos] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Estado para carga inicial de datos
-  const [isSaving, setIsSaving] = useState(false); // Estado para guardado/borrado
-  const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  // const [statusMessage, setStatusMessage] = useState({ type: '', text: '' }); // Eliminado
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // --- NUEVO: useEffect para LEER insumos de Firestore al cargar ---
-  // (Implementación básica de lectura - la mejoraremos después con listeners)
+  // useEffect para LEER insumos
   useEffect(() => {
     const fetchInsumos = async () => {
-      setIsLoading(true);
+      setIsLoading(true); // setStatusMessage({ type: '', text: '' }); // No necesario
+      console.log("GestionInsumos Montado: Fetching insumos...");
       try {
-        console.log("Intentando obtener insumos de Firestore...");
         const data = await getDocs(insumosCollectionRef);
         const insumosData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        console.log("Insumos obtenidos:", insumosData);
+        insumosData.sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
         setInsumos(insumosData);
-        setStatusMessage({ type: 'info', text: `Se encontraron ${insumosData.length} insumos.` });
-      } catch (error) {
-        console.error("Error obteniendo insumos: ", error);
-        setStatusMessage({ type: 'error', text: 'Error al cargar los insumos.' });
-        setInsumos([]); // Asegurar que esté vacío si hay error
-      } finally {
-        setIsLoading(false);
-      }
+      } catch (error) { console.error("Error obteniendo insumos: ", error); toast.error('Error al cargar los insumos.'); setInsumos([]); }
+      finally { setIsLoading(false); }
     };
-
     fetchInsumos();
-  // El array vacío [] significa que este efecto se ejecuta solo una vez, al montar el componente
   }, []);
 
-
-  // --- MANEJADORES PARA ABRIR MODALES ---
-  const handleOpenAddForm = () => {
-    setStatusMessage({ type: '', text: '' });
-    // Pasamos directamente la función async que guarda
-    openModal('addInsumo', { onSave: handleDoSaveInsumo });
-  };
-
-  const handleEditInsumo = (insumo) => {
-     setStatusMessage({ type: '', text: '' });
-     // Pasamos la función async y el insumo a editar
-    openModal('editInsumo', { insumoData: insumo, onSave: handleDoSaveInsumo });
-  };
-
-  const handleDeleteInsumo = (insumo) => {
-     setStatusMessage({ type: '', text: '' });
-    // Pasamos la función async de borrado
-    openModal('confirmDeleteInsumo', {
-        nombre: insumo.nombre,
-        id: insumo.id,
-        confirmAction: () => handleDoDeleteInsumo(insumo.id)
+  // Lógica de Filtrado
+  const filteredInsumos = useMemo(() => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+    if (!lowerCaseSearchTerm) return insumos;
+    if (!Array.isArray(insumos)) return [];
+    return insumos.filter(insumo => {
+        const nombre = insumo.nombre || ''; const categoria = insumo.categoria || '';
+        const proveedor = insumo.proveedor || ''; const presentacion = insumo.presentacion || '';
+        return ( nombre.toLowerCase().includes(lowerCaseSearchTerm) || categoria.toLowerCase().includes(lowerCaseSearchTerm) || proveedor.toLowerCase().includes(lowerCaseSearchTerm) || presentacion.toLowerCase().includes(lowerCaseSearchTerm) );
     });
-  };
+  }, [insumos, searchTerm]);
 
-  // --- FUNCIONES QUE REALIZAN LA LÓGICA CON FIRESTORE ---
+  // Handlers para abrir modales
+  const handleOpenAddForm = () => { /*setStatusMessage({ type: '', text: '' });*/ openModal('addInsumo', { onSave: handleDoSaveInsumo }); };
+  const handleEditInsumo = (insumo) => { /*setStatusMessage({ type: '', text: '' });*/ openModal('editInsumo', { insumoData: insumo, onSave: handleDoSaveInsumo }); };
+  const handleDeleteInsumo = (insumo) => { /*setStatusMessage({ type: '', text: '' });*/ openModal('confirmDeleteInsumo', { title: "Confirmar Eliminación", message: `¿Seguro que deseas eliminar "${insumo.nombre}"?`, id: insumo.id, confirmAction: () => handleDoDeleteInsumo(insumo.id) }); };
 
-  // MODIFICADO: handleDoSaveInsumo ahora interactúa con Firestore
+  // --- FUNCIONES CRUD CON FIRESTORE (Usando toast) ---
+  // Guardar (Añadir o Editar)
   const handleDoSaveInsumo = async (insumoData, insumoIdOriginal) => {
-    console.log("Intentando guardar/actualizar insumo en Firestore:", insumoData, "ID Original:", insumoIdOriginal);
     setIsSaving(true);
-    setStatusMessage({ type: '', text: '' });
+    const dataToSave = { ...insumoData, precioPorKg: Number(insumoData.precioPorKg) || 0, precioTotalPresentacion: Number(insumoData.precioTotalPresentacion) || 0 };
+    const operationPromise = insumoIdOriginal
+        ? updateDoc(doc(db, "insumos", insumoIdOriginal), dataToSave)
+        : addDoc(insumosCollectionRef, dataToSave);
 
-    if (insumoIdOriginal) { // Lógica de EDICIÓN (PENDIENTE)
-        console.warn("Lógica de actualización aún no implementada.");
-        // TODO: Implementar updateDoc(doc(db, "insumos", insumoIdOriginal), insumoData);
-        await new Promise(resolve => setTimeout(resolve, 500)); // Simular
-        // TODO: Actualizar estado local de forma más eficiente o refetchear
-        setInsumos(prev => prev.map(i => i.id === insumoIdOriginal ? { ...insumoData, id: i.id } : i));
-        setStatusMessage({ type: 'success', text: 'Insumo actualizado! (Simulado)' });
-
-    } else { // Lógica de AÑADIR NUEVO
-        try {
-            console.log("Añadiendo a Firestore...");
-            // Usamos addDoc para que Firestore genere el ID
-            const docRef = await addDoc(insumosCollectionRef, insumoData);
-            console.log("Documento añadido con ID: ", docRef.id);
-            setStatusMessage({ type: 'success', text: `Insumo "${insumoData.nombre}" añadido.` });
-            // --- OPCIONAL: Actualizar lista local al añadir (forma básica) ---
-            // Añadimos el nuevo insumo al estado local para verlo inmediatamente
-            // Lo ideal a futuro es usar un listener de Firestore (onSnapshot)
-            setInsumos(prevInsumos => [...prevInsumos, { ...insumoData, id: docRef.id }]);
-            // --- Fin opcional ---
-
-        } catch (error) {
-            console.error("Error añadiendo documento: ", error);
-            setStatusMessage({ type: 'error', text: 'Error al guardar. Verifica la consola.' });
-            // No cerramos modal si hubo error, para no perder datos
-            setIsSaving(false); // Asegurarse de quitar estado de carga
-            return; // Salir para no llamar a closeModal()
-        }
-    }
-    // Si todo fue bien (o en la simulación de editar)
+    await toast.promise( operationPromise, {
+       loading: insumoIdOriginal ? 'Actualizando...' : 'Añadiendo...',
+       success: (result) => {
+            if (insumoIdOriginal) { setInsumos(prev => { const u = prev.map(i => i.id === insumoIdOriginal ? { ...dataToSave, id: i.id } : i); u.sort((a,b)=>a.nombre.localeCompare(b.nombre)); return u; }); }
+            else { setInsumos(prev => { const n = [...prev, { ...dataToSave, id: result.id }]; n.sort((a,b)=>a.nombre.localeCompare(b.nombre)); return n; }); }
+            closeModal();
+            return `Insumo "${dataToSave.nombre}" ${insumoIdOriginal ? 'actualizado' : 'añadido'}!`; },
+       error: (err) => { console.error("Error Firestore:", err); return `Error: ${err.message}`; }
+    });
     setIsSaving(false);
-    closeModal(); // Llama a la función del contexto para cerrar el modal
   };
 
-  // MODIFICADO: handleDoDeleteInsumo (pendiente Firestore real)
+  // Borrar (Usando toast y deleteDoc)
   const handleDoDeleteInsumo = async (idInsumo) => {
-      console.log("Intentando borrar insumo ID:", idInsumo);
-      setIsSaving(true);
-      setStatusMessage({ type: '', text: '' });
-      try {
-          console.warn("Lógica de borrado aún no implementada.");
-          // TODO: Implementar deleteDoc(doc(db, "insumos", idInsumo));
-          await new Promise(resolve => setTimeout(resolve, 500)); // Simular
-          // Actualizar estado local
-          setInsumos(prevInsumos => prevInsumos.filter(i => i.id !== idInsumo));
-          setStatusMessage({ type: 'success', text: 'Insumo eliminado! (Simulado)' });
-          console.log("Simulando eliminación...");
-      } catch (error) {
-          console.error("Error eliminando insumo (simulado): ", error);
-          setStatusMessage({ type: 'error', text: 'Error al eliminar.' });
-      } finally {
-         setIsSaving(false);
-         // closeModal() se llama desde MainLayout
-      }
+      if (!idInsumo) { toast.error('Error: ID inválido.'); return Promise.reject("ID inválido"); } // Devolver promesa rechazada
+      setIsSaving(true); // Todavía útil para deshabilitar botones si es necesario
+      const deletePromise = deleteDoc(doc(db, "insumos", idInsumo)); // La promesa de borrado
+
+      // Envolvemos la promesa en toast.promise
+      return toast.promise( deletePromise, {
+          loading: 'Eliminando insumo...',
+          success: () => {
+              console.log("Firestore: Documento eliminado.");
+              setInsumos(prevInsumos => prevInsumos.filter(i => i.id !== idInsumo)); // Actualizar UI
+              setIsSaving(false); // Quitar carga
+              return 'Insumo eliminado exitosamente.'; // Mensaje para toast
+          },
+          error: (err) => {
+              console.error("Error eliminando: ", err);
+              setIsSaving(false); // Quitar carga
+              // Devolver mensaje para toast
+              return err.code === 'permission-denied' ? 'Error de permisos al eliminar.' : 'Error al eliminar el insumo.';
+          }
+      });
+      // Ya no necesitamos try/catch/finally aquí si toast.promise lo maneja
   };
 
-
+  // --- JSX ---
   return (
     <div className={styles.gestionContainer}>
       <h1>Gestión de Insumos / Materia Prima</h1>
+      <div className={styles.actionBar}> <button onClick={handleOpenAddForm} className={styles.toggleFormButton} disabled={isSaving || isLoading}> <FaPlusCircle style={{marginRight: '8px'}}/> Añadir Nuevo Insumo </button> <div className={styles.searchWrapper}> <FaSearch className={styles.searchIcon} /> <input type="text" placeholder="Buscar..." className={styles.searchInput} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /> </div> </div>
 
-      <button
-        onClick={handleOpenAddForm}
-        className={styles.toggleFormButton}
-        disabled={isSaving || isLoading} // Deshabilitar si carga o guarda
-      >
-        <FaPlusCircle style={{marginRight: '8px'}}/> Añadir Nuevo Insumo
-      </button>
-
-      {/* Mensajes de Estado */}
-      {statusMessage.text && (
-          <p className={`${styles.statusMessage} ${statusMessage.type === 'error' ? styles.error : styles.success}`}>
-              {statusMessage.text}
-          </p>
-      )}
-      {/* Indicador de Carga/Guardado */}
-      {(isLoading || isSaving) && <p className={styles.loadingMessage}>{isLoading ? 'Cargando insumos...' : 'Guardando...'}</p>}
+      {/* Ya no se necesita el statusMessage estático */}
+      {(isLoading || isSaving) && <p className={styles.loadingMessage}>{isLoading ? 'Cargando...' : 'Procesando...'}</p>}
 
       <hr className={styles.divider} />
-
       <h2>Listado de Insumos</h2>
-      {/* Renderizamos la lista con los datos leídos (o vacía si aún no carga) */}
-      {!isLoading && (
-        <InsumosList
-            insumos={insumos}
-            onEdit={handleEditInsumo}
-            onDelete={handleDeleteInsumo}
-            ivaPercentage={IVA_TEMPORAL}
-        />
-      )}
-
+      {!isLoading && ( <InsumosList insumos={filteredInsumos} onEdit={handleEditInsumo} onDelete={handleDeleteInsumo} ivaPercentage={IVA_TEMPORAL} /> )}
+      {isLoading && <p className={styles.loadingMessage}>Cargando lista...</p>}
+      {!isLoading && !insumos.length && !searchTerm && ( <p className={styles.emptyMessage}>No hay insumos registrados.</p> )}
+      {!isLoading && insumos.length > 0 && !filteredInsumos.length && searchTerm && ( <p className={styles.emptyMessage}>No se encontraron insumos para "{searchTerm}".</p> )}
     </div>
   );
 }

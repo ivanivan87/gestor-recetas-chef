@@ -1,79 +1,60 @@
 /* src/pages/GestionInsumos.module.css */
 
-.gestionContainer {
-  padding: 15px;
-}
+.gestionContainer { padding: 15px; }
+.gestionContainer h1 { margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #6c757d; padding-bottom: 8px; }
+.gestionContainer h2 { margin-top: 30px; margin-bottom: 15px; color: #444; }
 
-.gestionContainer h1 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #333;
-  border-bottom: 2px solid #6c757d;
-  padding-bottom: 8px;
-}
+.actionBar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
 
-.gestionContainer h2 {
-    margin-top: 30px;
-    margin-bottom: 15px;
-    color: #444;
+/* --- ESTILOS CONSISTENTES PARA BOTÓN Y BÚSQUEDA --- */
+.toggleFormButton, .searchInput {
+    height: 40px; /* Misma altura fija */
+    border-radius: 5px;
+    font-size: 0.95rem; /* Misma fuente */
+    box-sizing: border-box;
+    border: 1px solid #ced4da; /* Mismo borde que input */
 }
 
 .toggleFormButton {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    margin-bottom: 15px; /* Reducir margen si hay mensajes debajo */
-    transition: background-color 0.2s ease, opacity 0.2s ease;
-    display: inline-flex;
-    align-items: center;
+    padding: 0 15px; /* Padding horizontal */
+    /* line-height: 38px; */ /* Usar flex para centrar */
+    background-color: #007bff; color: white; border: none; /* Quitar borde del botón */
+    cursor: pointer; transition: background-color 0.2s ease, opacity 0.2s ease;
+    display: inline-flex; align-items: center; justify-content: center; /* Centrar contenido */
+    flex-shrink: 0;
 }
+.toggleFormButton:hover:not(:disabled) { background-color: #0056b3; }
+.toggleFormButton:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.toggleFormButton:hover:not(:disabled) {
-    background-color: #0056b3;
+.searchWrapper { position: relative; display: flex; align-items: center; flex-grow: 1; max-width: 400px; }
+.searchIcon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #adb5bd; font-size: 1rem; pointer-events: none; z-index: 1; }
+
+.searchInput {
+    width: 100%;
+    padding: 8px 12px 8px 40px; /* Padding con espacio icono */
+    /* border ya definido arriba */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
-.toggleFormButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* --- NUEVO: Estilos para Mensajes --- */
-.statusMessage {
-    padding: 10px 15px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    font-weight: 500;
-    text-align: center;
-}
-
-.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-.loadingMessage {
-    font-style: italic;
-    color: #5a6268;
-    margin-bottom: 15px;
-    text-align: center;
-}
-/* --- FIN NUEVO ESTILOS --- */
+.searchInput:focus { border-color: #80bdff; outline: 0; box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
+/* --- FIN ESTILOS CONSISTENTES --- */
 
 
-.divider {
-    margin-top: 20px; /* Ajustar si es necesario */
-    margin-bottom: 30px;
-    border: 0;
-    border-top: 1px solid #eee;
+/* Mensaje de Carga/Procesando */
+.loadingMessage { font-style: italic; color: #5a6268; margin-bottom: 15px; text-align: center; padding: 10px; }
+.emptyMessage { margin-top: 20px; text-align: center; color: #6c757d; font-style: italic; }
+
+.divider { margin-top: 20px; margin-bottom: 30px; border: 0; border-top: 1px solid #eee; }
+
+/* --- ESTILOS ELIMINADOS --- */
+/* .statusMessage { ... } */
+/* .success { ... } */
+/* .error { ... } */
+/* --- FIN ESTILOS ELIMINADOS --- */
+
+/* Responsividad */
+@media (max-width: 600px) {
+    .actionBar { flex-direction: column; align-items: stretch; }
+    .searchWrapper { max-width: none; }
+    .toggleFormButton, .searchInput { height: 40px; font-size: 0.9rem; }
+    .toggleFormButton { padding: 0 15px; justify-content: center; }
 }
